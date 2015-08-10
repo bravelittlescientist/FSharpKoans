@@ -58,8 +58,22 @@ module ``about the stock example`` =
     // tests for yourself along the way. You can also try 
     // using the F# Interactive window to check your progress.
 
+    let getStockDataDateOpenClose (x:string) =
+        let split = x.Split([|','|])
+        let date = split.[0]
+        let stockOpen = split.[1]
+        let stockClose = split.[4]
+        [date; stockOpen; stockClose]
+
+    let getOpenCloseDifference (stock:list<string>) =
+        abs (System.Double.Parse stock.[1] - System.Double.Parse stock.[2])
+
     [<Koan>]
     let YouGotTheAnswerCorrect() =
-        let result =  __
+        let result =
+            stockData.Tail
+            |> List.map getStockDataDateOpenClose
+            |> Seq.maxBy getOpenCloseDifference
+            |> (fun stck -> stck.Head)
         
         AssertEquality "2012-03-13" result
